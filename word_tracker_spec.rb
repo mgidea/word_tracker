@@ -12,13 +12,13 @@ describe WordTracker do
   end
 
   it "counts different sentence full of words" do
-    expect(WordTracker.new("I hate, all of this, kind of stuff").frequency).to eql(
+    expect(WordTracker.new("I hate hate, all of this this this, kind of stuff").frequency).to eql(
     {
    "i" => 1,
-   "hate" => 1,
+   "hate" => 2,
    "all" => 1,
    "of" => 2,
-   "this" => 1,
+   "this" => 3,
    "kind" => 1,
    "stuff" => 1
     }
@@ -44,17 +44,24 @@ describe WordTracker do
     })
   end
 
-  it "counts the number of each punctuation and in the collection" do
-    expect(WordTracker.new("I hate, all// of_ this, kind: of: stuff.").punctuation_count).to eql(
+  it "counts the number of each punctuation in the collection" do
+    expect(WordTracker.new("I hate, all// of this, kind: of: stuff.").punctuation_count).to eql(
     {
       "," => 2,
       "/" => 2,
-      "_" => 1,
       ":" => 2,
       "." => 1,
 
 
     })
+  end
 
-
+  it "displays the the most common words" do
+    expect(WordTracker.new("I hate hate, all of this this this, kind of stuff").most_common).to eql(
+    {
+      "this" => 3,
+      "hate" => 2,
+       "of" => 2
+    })
+  end
 end

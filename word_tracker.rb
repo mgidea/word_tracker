@@ -4,8 +4,9 @@ class WordTracker
     @phrase = phrase
     @sentence = phrase.split
     @frequencies = {}
-    @punctuations = []
+    @punctuations = {}
     @letters = {}
+
   end
 
   def punctuation?(word)
@@ -31,17 +32,27 @@ class WordTracker
 
   def letter_frequency
     @sentence.join.split(//).each do |letter|
-      if punctuation?(letter)
-        @punctuations << letter
+      if !punctuation?(letter)
+        unless @letters.has_key?(letter)
+          @letters[letter.downcase] = 0
+        end
+          @letters[letter.downcase] += 1
       end
-      unless @letters.has_key?(letter)
-        @letters[letter.downcase] = 0
-      end
-      @letters[letter.downcase] += 1
     end
     @letters
   end
 
+  def punctuation_count
+    @sentence.join.split(//).each do |punctuation|
+      if punctuation?(punctuation)
+        unless @punctuations.has_key?(punctuation)
+          @punctuations[punctuation] = 0
+        end
+        @punctuations[punctuation] += 1
+      end
+    end
+    @punctuations
+  end
 
     # {
     #   "i" => 3,
