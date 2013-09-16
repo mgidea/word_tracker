@@ -41,8 +41,20 @@ describe WordTracker do
       "n" => 1,
       "d" => 1,
       "u" => 1
-    }
-      )
-
+    })
   end
+
+  it "counts the number of each punctuation and in the collection" do
+    expect(WordTracker.new("I hate, all// of_ this, kind: of: stuff.").punctuation_count).to eql(
+    {
+      "," => 2,
+      "/" => 2,
+      "_" => 1,
+      ":" => 2,
+      "." => 1,
+
+
+    })
+
+
 end
