@@ -26,7 +26,7 @@ describe WordTracker do
   end
 
   it "counts the number of each letter" do
-    expect(WordTracker.new("I hate, all of this, kind of stuff").letter_frequency).to eql(
+    expect(WordTracker.new("I hate all of this kind of stuff").letter_frequency).to eql(
     {
       "i" => 3,
       "h" => 2,
@@ -35,13 +35,14 @@ describe WordTracker do
       "e" => 1,
       "l" => 2,
       "o" => 2,
+      "f" => 4,
       "s" => 2,
       "k" => 1,
       "n" => 1,
       "d" => 1,
-      "f" => 3,
       "u" => 1
     }
       )
+
   end
 end

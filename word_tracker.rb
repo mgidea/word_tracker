@@ -1,27 +1,64 @@
 class WordTracker
 
-  def initialize(sentence)
-    @sentence = sentence.split
-    @frequencies ={}
+  def initialize(phrase)
+    @phrase = phrase
+    @sentence = phrase.split
+    @frequencies = {}
+    @punctuations = []
+    @letters = {}
+  end
+
+  def punctuation?(word)
+   (/\W/).match(word)
   end
 
   def frequency
     @sentence.each do |word|
-      if (/\W/).match(word)
-        word.sub!(/\W/, "")
+      if punctuation?(word)
+        new_word = word.sub!(/\W/, "")
+      else
+        new_word = word
       end
-      unless @frequencies.has_key?(word)
-        @frequencies[word.downcase] = 0
+
+      unless @frequencies.has_key?(new_word)
+        @frequencies[new_word.downcase] = 0
       end
-        @frequencies[word.downcase] += 1
+        @frequencies[new_word.downcase] += 1
     end
     @frequencies
   end
 
-  #    {
-  # "toy" => 3,
-  # "boat" => 3
-  # }
+
+  def letter_frequency
+    @sentence.join.split(//).each do |letter|
+      if punctuation?(letter)
+        @punctuations << letter
+      end
+      unless @letters.has_key?(letter)
+        @letters[letter.downcase] = 0
+      end
+      @letters[letter.downcase] += 1
+    end
+    @letters
+  end
+
+
+    # {
+    #   "i" => 3,
+    #   "h" => 2,
+    #   "a" => 2,
+    #   "t" => 3,
+    #   "e" => 1,
+    #   "l" => 2,
+    #   "o" => 2,
+    #   "s" => 2,
+    #   "k" => 1,
+    #   "n" => 1,
+    #   "d" => 1,
+    #   "f" => 3,
+    #   "u" => 1
+    # }
+
 
 
 end
