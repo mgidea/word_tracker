@@ -26,7 +26,7 @@ describe WordTracker do
   end
 
   it "counts the number of each letter" do
-    expect(WordTracker.new("I hate all of this kind of stuff").letter_frequency).to eql(
+    expect(WordTracker.new("I hate, all// of this, kind: of: stuff.").letter_frequency).to eql(
     {
       "i" => 3,
       "h" => 2,
@@ -57,11 +57,34 @@ describe WordTracker do
   end
 
   it "displays the the most common words" do
-    expect(WordTracker.new("I hate hate, all of this this this, kind of stuff").most_common).to eql(
+    expect(WordTracker.new("I hate hate, all of this this this, kind of stuff").most_common_words).to eql(
     {
       "this" => 3,
       "hate" => 2,
        "of" => 2
     })
   end
+
+  it "displays the most common letter" do
+    expect(WordTracker.new("I hate, all// of this, kind: of: stuff.").most_common_letters).to eql(
+    {
+      "f" => 4,
+      "i" => 3,
+      "t" => 3
+    })
+  end
+
+  it "displays all letters not used in the string" do
+    expect(WordTracker.new("I hate, all// of this, kind: of: stuff.").unused).to eql(
+    ["b","c","g","j","m","p","q","r","v","w","x","y","z"]
+    )
+  end
+
+  it "displays words only used once" do
+    expect(WordTracker.new("I hate, all// of this, kind: of: stuff.").once).to eql(
+      ["i","hate","all","this","kind","stuff"]
+      )
+  end
 end
+
+

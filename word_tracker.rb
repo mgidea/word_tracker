@@ -3,6 +3,7 @@ class WordTracker
   def initialize(phrase)
     @phrase = phrase
     @sentence = phrase.split
+    @single_letters = @sentence.join.split(//)
     @frequencies = {}
     @punctuations = {}
     @letters = {}
@@ -16,7 +17,7 @@ class WordTracker
   def frequency
     @sentence.each do |word|
       if punctuation?(word)
-        new_word = word.sub!(/\W/, "")
+        new_word = word.gsub(/\W/, "")
       else
         new_word = word
       end
@@ -54,22 +55,52 @@ class WordTracker
     @punctuations
   end
 
-    # {
-    #   "i" => 3,
-    #   "h" => 2,
-    #   "a" => 2,
-    #   "t" => 3,
-    #   "e" => 1,
-    #   "l" => 2,
-    #   "o" => 2,
-    #   "s" => 2,
-    #   "k" => 1,
-    #   "n" => 1,
-    #   "d" => 1,
-    #   "f" => 3,
-    #   "u" => 1
-    # }
+  def most_common_words
+    most_common = {}
+    frequency
+    @frequencies.each do |word, occurrence|
+      if @frequencies.values.sort[-3..-1].include?(occurrence)
+        most_common[word] = occurrence
+      end
+    end
+    most_common
+  end
 
+   def most_common_letters
+    most_common = {}
+    letter_frequency
+    @letters.each do |letter, occurrence|
+      if @letters.values.sort[-3..-1].include?(occurrence)
+        most_common[letter] = occurrence
+      end
+    end
+    most_common
+  end
 
+  def unused
+    unused_letters = []
+    ("a".."z").each do |letter|
+      if !letter_frequency.keys.include?(letter)
+        unused_letters << letter
+      end
+    end
+    unused_letters
 
+  end
+
+  def once
+    once_words = []
+    frequency.each do |word, occurrence|
+      if occurrence == 1
+        once_words << word
+      end
+    end
+    once_words
+  end
 end
+
+
+
+
+
+
