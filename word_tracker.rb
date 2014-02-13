@@ -78,7 +78,7 @@ class WordTracker
   end
 
   def unused
-    ("a".."z").select{|letter|!letter_frequency.keys.include?(letter)}
+    ("a".."z").to_a.select{|letter|!letter_frequency.keys.include?(letter)}
   end
 
   def once
