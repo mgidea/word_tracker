@@ -58,37 +58,28 @@ class WordTracker
     @punctuations
   end
 
-  def most_common_words
+  def most_common(frequency_type)
     most_common = {}
-    frequency
-    @frequencies.each do |word, occurrence|
-      if @frequencies.values.sort[-3..-1].include?(occurrence)
-        most_common[word] = occurrence
+    frequency_type.each do |item, occurrence|
+      if frequency_type.values.sort[-3..-1].include?(occurrence)
+        most_common[item] = occurrence
       end
     end
     most_common
+  end
+
+  def most_common_words
+    frequency
+    most_common(@frequencies)
   end
 
   def most_common_letters
-    most_common = {}
     letter_frequency
-    @letters.each do |letter, occurrence|
-      if @letters.values.sort[-3..-1].include?(occurrence)
-        most_common[letter] = occurrence
-      end
-    end
-    most_common
+    most_common(@letters)
   end
 
   def unused
-    unused_letters = []
-    ("a".."z").each do |letter|
-      if !letter_frequency.keys.include?(letter)
-        unused_letters << letter
-      end
-    end
-    unused_letters
-
+    ("a".."z").to_a.select{|letter|!letter_frequency.keys.include?(letter)}
   end
 
   def once
