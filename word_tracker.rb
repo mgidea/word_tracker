@@ -1,56 +1,59 @@
 class WordTracker
 
   def initialize(phrase)
-    @phrase = phrase
     @sentence = phrase.split
-    @single_letters = @sentence.join.split(//)
-    @frequencies = {}
-    @punctuations = {}
-    @letters = {}
+    @frequencies = Hash.new(0)
+    @punctuations = Hash.new(0)
+    @letters = Hash.new(0)
 
+  end
+
+  def pull_out_letters
+    @sentence.join.split(//)
+  end
+
+  def letters
+    pull_out_letters.reject{|letter| punctuation?(letter)}
+  end
+
+  def punctuations
+    pull_out_letters.select{|letter| punctuation?(letter)}
   end
 
   def punctuation?(word)
    (/\W/).match(word)
   end
 
-  def frequency
-    @sentence.each do |word|
-      if punctuation?(word)
-        new_word = word.gsub(/\W/, "")
-      else
-        new_word = word
-      end
+  def lose_punctuations(word)
+    if punctuation?(word)
+        word = word.gsub(/\W/, "")
+    end
+    word
+  end
 
-      unless @frequencies.has_key?(new_word)
-        @frequencies[new_word.downcase] = 0
-      end
-        @frequencies[new_word.downcase] += 1
+  def clean_sentence
+    @sentence.map{|word| lose_punctuations(word)}
+  end
+
+  def frequency
+    sentence = clean_sentence
+    sentence.each do |word|
+      @frequencies[word.downcase] += 1
     end
     @frequencies
   end
 
 
   def letter_frequency
-    @sentence.join.split(//).each do |letter|
-      if !punctuation?(letter)
-        unless @letters.has_key?(letter)
-          @letters[letter.downcase] = 0
-        end
-          @letters[letter.downcase] += 1
-      end
+    letters.each do |letter|
+      @letters[letter.downcase] += 1
     end
     @letters
   end
 
   def punctuation_count
-    @sentence.join.split(//).each do |punctuation|
-      if punctuation?(punctuation)
-        unless @punctuations.has_key?(punctuation)
-          @punctuations[punctuation] = 0
-        end
-        @punctuations[punctuation] += 1
-      end
+    punctuations.each do |punctuation|
+      @punctuations[punctuation] += 1
     end
     @punctuations
   end
@@ -66,7 +69,7 @@ class WordTracker
     most_common
   end
 
-   def most_common_letters
+  def most_common_letters
     most_common = {}
     letter_frequency
     @letters.each do |letter, occurrence|
